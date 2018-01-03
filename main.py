@@ -27,6 +27,8 @@ class IconLeftSampleWidget(ILeftBodyTouch, MDCheckbox):
 
 class MyBoxLayout(BoxLayout):
 	
+	file_size = 0
+
 	def __init__(self, **kwargs):
         	super(MyBoxLayout, self).__init__(**kwargs)
 
@@ -39,6 +41,7 @@ class MyBoxLayout(BoxLayout):
 		box_vertical = self.ids.b1
 		self.yt = YouTube(url)
 		self.yt.register_on_complete_callback(self.downloadComplete)
+		self.yt.register_on_progress_callback(self.showProgressBar)
 		
 		v_strms = self.yt.streams.filter(progressive=True).all()
 		a_strms = self.yt.streams.filter(only_audio=True).all()
@@ -48,38 +51,44 @@ class MyBoxLayout(BoxLayout):
 		
 		for index,eachStream in enumerate(self.streams):
 		    box_horizontal = BoxLayout(orientation='horizontal', size_hint=(1,.4))
-		    checkbox = MDCheckbox(id=str(index), group='test', size_hint=(.2,1))
+		    checkbox = MDCheckbox(id=str(index), group='test', size_hint=(.2,.8))
 		    checkbox.bind(active=self.cb_clicked)
 		    video_details = 'Format: ' + str(eachStream.mime_type) + ', Resolution: ' + str(eachStream.resolution)
-		    label = MDLabel(text=video_details, size_hint=(.8,1))
+		    label = MDLabel(text=video_details, size_hint=(.8,.8))
 		    box_horizontal.add_widget(checkbox)
 		    box_horizontal.add_widget(label)
 		    box_vertical.add_widget(box_horizontal)
 			
-		
 		self.ids.spinner.active = False
 
 	def print_test(self, inst):
 		print 'hello ', inst.text
 	
 	def cb_clicked(self, checkbox, value):
-		print checkbox.id
 		self.selected = self.streams[int(checkbox.id)]
 	
-	def downloadVideo(self, selectedVideo):
-		print 'downloading..'		
+	def showProgressBar(self, stream, chunk, file_handle, bytes_remaining):
+		download_status = 0
+		if self.file_size > bytes_remaining :
+			download_status = int(((self.file_size - float(bytes_remaining))/self.file_size)*100)
+		else:
+			self.file_size = bytes_remaining
+
+		print download_status
+		self.ids.progress_bar.value = download_status
+
+	def downloadVideo(self, selectedVideo):		
 		selectedVideo.download()
 
 	def downloadButtonClicked(self):
 		self.ids.spinner.active = True
         	thread.start_new_thread(self.downloadVideo, (self.selected,))
 		#self.showDialog()
-
+	
 	def downloadComplete(self, stream, file_handle):
 		self.ids.spinner.active = False
-        	print('Download Complete')
+		self.ids.progress_bar.value = 100
 		self.showDialog()
-
 
 	def showDialog(self):
 		content = MDLabel(font_style='Body1',
@@ -99,7 +108,6 @@ class MyBoxLayout(BoxLayout):
 		self.dialog.open()
 
 	def pasteURL(self):
-		print 'pasting..'
 		self.ids.inputUrl.text = Clipboard.paste()
 
 class MyApp(App):

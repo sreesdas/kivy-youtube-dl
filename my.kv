@@ -4,6 +4,7 @@
 #:import MDProgressBar kivymd.progressbar.MDProgressBar
 #:import MDSpinner kivymd.spinner.MDSpinner
 #:import MDList kivymd.list.MDList
+#:import MDProgressBar kivymd.progressbar.MDProgressBar
 
 <MyBoxLayout@BoxLayout>:
 	id: box_container
@@ -51,4 +52,5 @@
 	BoxLayout:
 		id: b2
 		size_hint: (1,.1)
-	
+		MDProgressBar:
+			id: progress_bar
