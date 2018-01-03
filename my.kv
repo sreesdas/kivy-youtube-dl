@@ -4,9 +4,8 @@
 #:import MDProgressBar kivymd.progressbar.MDProgressBar
 #:import MDSpinner kivymd.spinner.MDSpinner
 #:import MDList kivymd.list.MDList
-#:import MDProgressBar kivymd.progressbar.MDProgressBar
 
-<MyBoxLayout@BoxLayout>:
+<MyBoxLayout>:
 	id: box_container
 	orientation: 'vertical'
 	Toolbar:
@@ -15,7 +14,7 @@
 		md_bg_color: app.theme_cls.primary_color
 		background_palette: 'Primary'
 		background_hue: '500'
-		right_action_items: [['content-copy', lambda x: box_container.pasteURL() ]]
+		right_action_items: [['content-copy', lambda x: box_container.pasteURL() ], ['plus', lambda x: box_container.resetApp()]]
 		left_action_items: [['menu', lambda x: None]]
 	BoxLayout:
 		orientation: 'horizontal'
@@ -36,9 +35,10 @@
 		pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 		active: False
 
-	BoxLayout:
-		id: b1
-		orientation: 'vertical'
+	ScrollView:
+		BoxLayout:
+			id: b1
+			orientation: 'vertical'
 
 	MDFloatingActionButton:
 		id: float_act_btn
