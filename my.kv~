@@ -14,7 +14,7 @@
 		md_bg_color: app.theme_cls.primary_color
 		background_palette: 'Primary'
 		background_hue: '500'
-		right_action_items: [['content-copy', lambda x: box_container.pasteURL() ]]
+		right_action_items: [['content-copy', lambda x: app.root.pasteURL ]]
 		left_action_items: [['menu', lambda x: None]]
 	BoxLayout:
 		orientation: 'horizontal'

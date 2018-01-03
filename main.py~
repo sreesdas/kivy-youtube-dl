@@ -100,7 +100,6 @@ class MyBoxLayout(BoxLayout):
 
 	def pasteURL(self):
 		print 'pasting..'
-		self.ids.inputUrl.text = Clipboard.paste()
 
 class MyApp(App):
 	theme_cls = ThemeManager()
