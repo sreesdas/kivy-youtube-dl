@@ -1,3 +1,3 @@
-title= PytubeMD
+title= NimmiTube-MD
 author= sree
 orientation= portrait
