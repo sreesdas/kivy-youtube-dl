@@ -113,7 +113,7 @@ class MyBoxLayout(BoxLayout):
 		self.showSnackBar()
 
 	def showSnackBar(self):
-		Snackbar(text="Download Complete!").show()
+		Snackbar(text="Download Completed!").show()
 
 	def pasteURL(self):
 		self.ids.inputUrl.text = Clipboard.paste()
